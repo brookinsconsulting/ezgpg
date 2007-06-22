@@ -38,7 +38,7 @@
  *
  *
 **/
-
+include_once( "lib/ezfile/classes/ezfile.php" );
 class GPG
 {
 
@@ -68,26 +68,27 @@ class GPG
 
     // constructor function
     // Parameters: path to gpg binary, path to keyring files, directory for temporary file.
-    function GPG( $gpgbin, $keyring, $tempdir )
+    function GPG( $gpgbin, $keyring, $tempdir = null )
     {
-
+        if ( $tempdir === null )
+            $this->tempdir = eZSys::cacheDirectory();
         // set the directory for the GPG keys
         $this->keyring = $keyring;
         // set gpg binary
         $this->gpgbin = $gpgbin;
-
+        $mctime = substr( md5( microtime() ), 7, 10 );
         // temporary file name - will only hold encrypted data
-        $this->tmpfile   = $tempdir . '/' . substr( md5( microtime() ), 7, 10 ).".asc";
-
+        $this->tmpfile = $mctime.".asc";
+        $this->tmpfile2 = $mctime;
         // for validating submitted PGP / GPG key(s)
         $this->gpgck_parm     = " --no-secmem-warning --homedir ".$this->keyring." --list-keys ";
 
         // for encrypting the data block to the submitted PGP / GPG key(s)
-        $this->gpgcmd_parm    = " -a --always-trust --batch --no-secmem-warning --homedir ".$this->keyring." -e -o ".$this->tmpfile;
+        $this->gpgcmd_parm    = " -a --always-trust --batch --no-secmem-warning --homedir ".$this->keyring." -e --output ". $this->tempdir . '/' . $this->tmpfile . " --encrypt ". $this->tempdir . '/' . $this->tmpfile2;
 
         // for encrypting the data block to the submitted PGP / GPG key(s)
         // $this->gpg_decrypt_cmd_parm    = " -a --always-trust --batch --no-secmem-warning --homedir ".$this->keyring; // ." -e -o ".$this->tmpfile;
-        $this->gpg_decrypt_cmd_parm  = " --passphrase-fd 3 -q --homedir ".$this->keyring." --armor --no-tty --no-permission-warning --no-secmem-warning --no-greeting --decrypt";
+        $this->gpg_decrypt_cmd_parm  = " --passphrase-fd 0 -q --homedir ".$this->keyring." --armor --no-tty --yes --batch --no-permission-warning --no-secmem-warning --no-greeting --output " . $this->tempdir . '/' . $this->tmpfile2 . " --decrypt " . $this->tempdir . '/' . $this->tmpfile;
     }
 
     function decode( $data, $key, $debug = false )
@@ -106,48 +107,26 @@ class GPG
             // return eZerror here and else notice
         }
 
-        // flatten string
-        /*
-        foreach( $data as $line )
-        {
-            $data .= str_replace("\r\n", "", $line);
-        }
-        */
-
+        eZFile::create( $this->tmpfile, $this->tempdir, $data );
         // okay - we have valid key.  Let's encrypt the contents now.
-        $gpg_call = $this->gpgbin . " --recipient $key " . $this->gpg_decrypt_cmd_parm;
-        $gpg_call .= " 3<<< '$key' <<< '$data' ";
-
-        // $last_line = system( $gpg_call, $decrypted );
-        // $decrypted = passthru( $gpg_call, $retcode );
-        // $decrypted = passthru( $gpg_call, $retcode );
+        $gpg_call = 'echo ' . $key . '|' .$this->gpgbin . " --recipient $key " . $this->gpg_decrypt_cmd_parm;
 
         /* Add redirection so we can get stderr. */
-        $handle = popen($gpg_call, 'r');
-        $decrypted = fread($handle, 2096);
+        $lastline = exec( $gpg_call, $output, $return_var );
+        $decrypted = file_get_contents( $this->tempdir . '/' . $this->tmpfile2 );
 
-        /*
-        print_r('command: '. $gpg_call .'<hr />');
-        print_r( $ret .'<hr />');
-        die();
-        */
 
-        // Debug
-        if( $debug == true )
+        if( !file_exists( $this->tempdir . '/' . $this->tmpfile2 ) )
         {
-           print_r('command: '. $gpg_call .'<hr />');
-           print_r( $ret .'<hr />');
-           die();
+            $this->errormsg = "Failure connecting to gpg binary.";
+            $ret = false;
         }
-
-        if( !$decrypted )
+        else 
         {
-                $this->errormsg = "Failure connecting to gpg binary: '$gpg_call'.";
-                return FALSE;
-        } else {
             $ret = $decrypted;
         }
-
+        unlink( $this->tempdir . '/' . $this->tmpfile );
+        unlink( $this->tempdir . '/' . $this->tmpfile2 );
         return $ret;
     }
 
@@ -159,9 +138,10 @@ class GPG
             // Invalid key.
             return FALSE;
         }
-
+        eZFile::create( $this->tmpfile2, $this->tempdir, $data );
         // okay - we have valid key.  Let's encrypt the contents now.
         $gpg_call = $this->gpgbin . " --recipient $key " . $this->gpgcmd_parm;
+
         $handle = popen( $gpg_call, "w" );
         if( !$handle )
         {
@@ -170,29 +150,13 @@ class GPG
 
         }
 
-        // Debug
-        if( $debug == true )
-        {
-            print_r('command: '. $gpg_call .'<hr />');
-            print_r( $ret .'<hr />');
-            // die();
-        }
-
         // we only write the unencrypted data directly to the GPG process, and not to a file
         // Note: Remove disk element as requirired only method supported (re: ezgpg.php has this)
-        fwrite( $handle, $data );
+        // fwrite( $handle, $data );
         pclose( $handle );
-        $encrypted = file_get_contents( $this->tmpfile );
-        unlink( $this->tmpfile );
-
-        if( false )
-        {
-            $encrypted = str_replace("\n", "", $encrypted);
-            $encrypted = str_replace("-----BEGIN PGP MESSAGE-----", "-----BEGIN PGP MESSAGE----- ", $encrypted);
-            $encrypted = str_replace("-----END PGP MESSAGE-----", " -----END PGP MESSAGE-----", $encrypted);
-            $encrypted = str_replace("(GNU/Linux)", "(GNU/Linux) ", $encrypted);
-        }
-        // die(str_replace("\n", "", $encrypted));
+        $encrypted = file_get_contents( $this->tempdir .'/'. $this->tmpfile );
+        unlink( $this->tempdir .'/' . $this->tmpfile );
+        unlink( $this->tempdir .'/' . $this->tmpfile2 );
 
         return $encrypted;
     }
@@ -216,4 +180,5 @@ class GPG
 }
 
 ?>
+
 

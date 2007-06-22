@@ -155,11 +155,13 @@ class eZGPGOperators
         $ini =& eZINI::instance( 'ezgpg.ini' );
 
         $gpg_binary = $ini->variable( 'GPGLocations', 'GPGBinary');
+        if ( is_array( $gpg_binary ) )
+            $gpg_binary = $gpg_binary[eZSys::osType()];
+        $gpg_binary = eZDIR::convertSeparators( $gpg_binary, EZ_DIR_SEPARATOR_LOCAL );
         $gpg_keyring = $ini->variable( 'GPGLocations', 'GPGKeyring');
-        $gpg_tempdir = $ini->variable( 'GPGLocations', 'GPGTempdir');
 
-        $gpgEncoder = new GPG( $gpg_binary, $gpg_keyring, $gpg_tempdir );
-        $encoded_data = $gpgEncoder->encode( $data, $key, $this->Debug );
+        $gpgEncoder = new GPG( $gpg_binary, $gpg_keyring );
+        $encoded_data = $gpgEncoder->encode( $data, $key );
 
         if ( $encoded_data )
         {
@@ -180,17 +182,20 @@ class eZGPGOperators
         $ini =& eZINI::instance( 'ezgpg.ini' );
 
         $gpg_binary = $ini->variable( 'GPGLocations', 'GPGBinary');
+        if ( is_array( $gpg_binary ) )
+            $gpg_binary = $gpg_binary[eZSys::osType()];
+        $gpg_binary = eZDIR::convertSeparators( $gpg_binary, EZ_DIR_SEPARATOR_LOCAL );
         $gpg_keyring = $ini->variable( 'GPGLocations', 'GPGKeyring');
-        $gpg_tempdir = $ini->variable( 'GPGLocations', 'GPGTempdir');
 
-        $gpgDecoder = new GPG( $gpg_binary, $gpg_keyring, $gpg_tempdir );
-        $decoded_data = $gpgDecoder->decode( $data, $key, $this->Debug );
+        $gpgDecoder = new GPG( $gpg_binary, $gpg_keyring );
+        $decoded_data = $gpgDecoder->decode( $data, $key );
 
-        if ( $decoded_data )
+        if ( $decoded_data !== false )
         {
             $ret = $decoded_data;
             eZDebug::writeNotice( 'eZGPGOperators::gpgDecode: decoded data: ' . $gpgDecoder->errormsg );
         } else {
+            $ret = false;
             eZDebug::writeError( 'eZGPGOperators::gpgDecodeLimited: no decoded data returned : ' . $gpgDecoder->errormsg );
         }
 
@@ -207,11 +212,13 @@ class eZGPGOperators
         $ini =& eZINI::instance( 'ezgpg.ini' );
 
         $gpg_binary = $ini->variable( 'GPGLocations', 'GPGBinary');
+        if ( is_array( $gpg_binary ) )
+            $gpg_binary = $gpg_binary[eZSys::osType()];
+        $gpg_binary = eZDIR::convertSeparators( $gpg_binary, EZ_DIR_SEPARATOR_LOCAL );
         $gpg_keyring = $ini->variable( 'GPGLocations', 'GPGKeyring');
-        $gpg_tempdir = $ini->variable( 'GPGLocations', 'GPGTempdir');
 
-        $gpgDecoder = new GPG( $gpg_binary, $gpg_keyring, $gpg_tempdir );
-        $decoded_data = $gpgDecoder->decode( $data, $key, $this->Debug );
+        $gpgDecoder = new GPG( $gpg_binary, $gpg_keyring );
+        $decoded_data = $gpgDecoder->decode( $data, $key );
 
         if ( $decoded_data )
         {
@@ -232,7 +239,6 @@ class eZGPGOperators
 
     /// \privatesection
     var $Operators;
-    var $Debug;
 }
 
 ?>
