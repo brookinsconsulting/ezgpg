@@ -84,7 +84,7 @@ class GPG
         $this->gpgck_parm     = " --no-secmem-warning --homedir ".$this->keyring." --list-keys ";
 
         // for encrypting the data block to the submitted PGP / GPG key(s)
-        $this->gpgcmd_parm    = " -a --always-trust --batch --no-secmem-warning --homedir ".$this->keyring." -e --output ". $this->tempdir . '/' . $this->tmpfile . " --encrypt ". $this->tempdir . '/' . $this->tmpfile2;
+        $this->gpgcmd_parm    = " -a --always-trust --batch --no-permission-warning --no-secmem-warning --homedir ".$this->keyring." -e --output ". $this->tempdir . '/' . $this->tmpfile . " --encrypt ". $this->tempdir . '/' . $this->tmpfile2;
 
         // for encrypting the data block to the submitted PGP / GPG key(s)
         // $this->gpg_decrypt_cmd_parm    = " -a --always-trust --batch --no-secmem-warning --homedir ".$this->keyring; // ." -e -o ".$this->tmpfile;
