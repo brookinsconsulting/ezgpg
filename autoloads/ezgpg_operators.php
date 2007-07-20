@@ -165,7 +165,7 @@ class eZGPGOperators
 
         if ( $encoded_data )
         {
-            eZDebug::writeNotice( 'eZGPGOperators::gpgEncode: encoded data: ' . $gpgEncoder->errormsg );
+            eZDebug::writeDebug( 'eZGPGOperators::gpgEncode: encoded data: ' . $encoded_data );
         } else {
             eZDebug::writeError( 'eZGPGOperators::gpgEncode: no encoded data returned : ' . $gpgEncoder->errormsg );
         }
@@ -193,7 +193,7 @@ class eZGPGOperators
         if ( $decoded_data !== false )
         {
             $ret = $decoded_data;
-            eZDebug::writeNotice( 'eZGPGOperators::gpgDecode: decoded data: ' . $gpgDecoder->errormsg );
+            eZDebug::writeDebug( 'eZGPGOperators::gpgDecode: decoded data: ' . $decoded_data );
         } else {
             $ret = false;
             eZDebug::writeError( 'eZGPGOperators::gpgDecodeLimited: no decoded data returned : ' . $gpgDecoder->errormsg );
@@ -222,7 +222,7 @@ class eZGPGOperators
 
         if ( $decoded_data )
         {
-            eZDebug::writeNotice( 'eZGPGOperators::gpgDecode: decoded data: ' . $gpgDecoder->errormsg );
+            eZDebug::writeDebug( 'eZGPGOperators::gpgDecode: decoded data: ' . $decoded_data );
         } else {
             eZDebug::writeError( 'eZGPGOperators::gpgDecodeLimited: no decoded data returned : ' . $gpgDecoder->errormsg );
         }
