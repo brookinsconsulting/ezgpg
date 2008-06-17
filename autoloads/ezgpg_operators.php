@@ -149,15 +149,15 @@ class eZGPGOperators
     /*!
      \Encodes the data for given key.
     */
-    function gpgEncode( $data, $key )
+    static function gpgEncode( $data, $key )
     {
         // fetch default settings
-        $ini =& eZINI::instance( 'ezgpg.ini' );
+        $ini = eZINI::instance( 'ezgpg.ini' );
 
         $gpg_binary = $ini->variable( 'GPGLocations', 'GPGBinary');
         if ( is_array( $gpg_binary ) )
             $gpg_binary = $gpg_binary[eZSys::osType()];
-        $gpg_binary = eZDIR::convertSeparators( $gpg_binary, EZ_DIR_SEPARATOR_LOCAL );
+        $gpg_binary = eZDIR::convertSeparators( $gpg_binary, eZDir::SEPARATOR_LOCAL );
         $gpg_keyring = $ini->variable( 'GPGLocations', 'GPGKeyring');
 
         $gpgEncoder = new GPG( $gpg_binary, $gpg_keyring );
@@ -176,15 +176,15 @@ class eZGPGOperators
     /*!
      \Decodes the data for given key.
     */
-    function gpgDecode( $data, $key )
+    static function gpgDecode( $data, $key )
     {
         // fetch default settings
-        $ini =& eZINI::instance( 'ezgpg.ini' );
+        $ini = eZINI::instance( 'ezgpg.ini' );
 
         $gpg_binary = $ini->variable( 'GPGLocations', 'GPGBinary');
         if ( is_array( $gpg_binary ) )
             $gpg_binary = $gpg_binary[eZSys::osType()];
-        $gpg_binary = eZDIR::convertSeparators( $gpg_binary, EZ_DIR_SEPARATOR_LOCAL );
+        $gpg_binary = eZDIR::convertSeparators( $gpg_binary, eZDir::SEPARATOR_LOCAL );
         $gpg_keyring = $ini->variable( 'GPGLocations', 'GPGKeyring');
 
         $gpgDecoder = new GPG( $gpg_binary, $gpg_keyring );
@@ -206,15 +206,15 @@ class eZGPGOperators
     /*!
      \Decodes the data for given key and returns only a limited number of characters.
     */
-    function gpgDecodeLimited( $data, $key, $limit = 4 )
+    static function gpgDecodeLimited( $data, $key, $limit = 4 )
     {
         // fetch default settings
-        $ini =& eZINI::instance( 'ezgpg.ini' );
+        $ini = eZINI::instance( 'ezgpg.ini' );
 
         $gpg_binary = $ini->variable( 'GPGLocations', 'GPGBinary');
         if ( is_array( $gpg_binary ) )
             $gpg_binary = $gpg_binary[eZSys::osType()];
-        $gpg_binary = eZDIR::convertSeparators( $gpg_binary, EZ_DIR_SEPARATOR_LOCAL );
+        $gpg_binary = eZDIR::convertSeparators( $gpg_binary, eZDir::SEPARATOR_LOCAL );
         $gpg_keyring = $ini->variable( 'GPGLocations', 'GPGKeyring');
 
         $gpgDecoder = new GPG( $gpg_binary, $gpg_keyring );
