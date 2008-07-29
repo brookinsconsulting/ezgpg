@@ -1,0 +1,26 @@
+eZ GPG extension v0.4.5 FEATURES
+=================================================
+
+Security
+* GPG/PGP Compatible Encryption
+* Secure - Does not write unencrypted data to disk
+* Secure - Avoids unessisary unencrypted memory usage
+* Secure - Does not write encrypted data to disk
+
+Functionality
+* Encryption and Decryption Methods
+* Encryption and Decryption Template Operators
+
+
+Support
+=================================================
+
+There are many additional features we would
+like to add to eZ GPG.
+
+A few users of eZ GPG may require further
+development of the eZ GPG extension.
+
+If you are interested in sponsoring the development
+of any of these features for your eZ publish web site,
+please contact info@brookinsconsulting.com

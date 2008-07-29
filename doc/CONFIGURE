@@ -1,0 +1,43 @@
+eZ GPG extension configuration (tutorial)
+=================================================
+
+A few users of eZ GPG may require further
+documentation extension of the default eZ publish store features.
+
+If you are interested in sponsoring the development
+of any of these features for your eZ publish web site,
+please contact info@brookinsconsulting.com
+
+=================================================
+#0 - Install GPG
+
+
+
+=================================================
+#1 - Configure GPG Keyring
+
+Install existing key or create new key in gpg settings directory, extension/ezpg/settings/.gpg
+
+Example howto, http://nmlug.org/faqs/gen-gpg-key.html
+
+> If you do not install a valid key, you may get an error message like this ...
+
+Error: 
+validate_key: /usr/bin/gpg --no-secmem-warning --homedir /web/pro/example_com/doc/extension/ezpg/settings/.gpg --list-keys admin@example.com
+
+
+=================================================
+#2 - Configure eZ GPG settings
+
+   extension/ezpg/settings/ezpg.ini
+
+
+=================================================
+#3 - Use eZ GPG Functions or Template Operators in your eZ publish installation
+
+
+=================================================
+Notes
+
+- N/A
+

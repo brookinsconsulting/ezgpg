@@ -1,0 +1,151 @@
+eZ GPG extension v0.4.5 INSTALL
+
+Introduction
+============
+
+1. What is the eZ GPG extension?
+   ------------------------------------------------
+
+   eZ GPG is a true eZ publish extension
+   that provides simple, transparent, secure
+   encryption and decryption to eZ publish
+   using the GNU Privacy Guard, GPG.
+
+   For more information about this extension please read the README file.
+
+1. License
+   -------
+
+   eZ GPG is licensed under the GNU General Public License.
+
+   The GNU GPL gives you the right to use, modify and redistribute
+   eZ GPG under certain conditions. The GNU GPL licence
+   is distributed with the software, see the file doc/LICENCE.
+   It is also available at http://www.gnu.org/licenses/gpl.txt
+
+   Using eZ GPG under the terms of the GNU GPL is free of charge.
+
+   For more information or questions please contact
+   license@brookinsconsulting.com
+
+2. Requirements
+   ------------
+
+   The following requirements exists for using eZ GPG extension:
+
+   o  eZ publish version:
+
+      Make sure you use eZ publish version 3.7 or higher.
+
+   o  PHP version:
+
+      Make sure you have PHP 4.4.x or higher.
+
+   o  eZ publish must be able to run external command 'gpg'
+
+
+Getting eZ publish
+==================
+
+You can download a version of eZ publish from ez.no,
+you will find the various versions at:
+
+http://ez.no/download/ez_publish/ez_publish_3_stable_releases
+
+Note: You will require eZ publish 3.7 or higher
+
+Information on the installation of eZ publish can be found at:
+http://ez.no/products/ez_publish_cms/documentation/installation
+and
+http://ez.no/doc
+
+
+Installing eZ GPG extension
+==============================================
+
+1. Copy the package into the `extension' directory
+   in the root of your eZ publish installation.
+
+2. Unpack the files in the distribution. The command
+   necessary is depends on the file you downloaded.
+   [tar.gz]:
+   $ tar -zxvf ezgpg-0_4_5.tar.gz
+   [zip]:
+   $ unzip ezgpg-0_4_5.tar.zip
+
+3. We must now enable the extension in eZ publish.
+
+   To do this edit site.ini.append(.php) in the folder
+   root_of_ezpublish/settings. If this file does not exist;
+   create it. Locate (or add) the block
+
+   [ExtensionSettings] and add the line:
+   ActiveExtensions[]=ezgpg
+
+   If you run several sites using only one distribution
+   and only some of the sites should use the extension,
+   make the changes in the override file of that siteaccess.
+
+   E.g root_of_ezpublish/settings/siteaccess/shop/site.ini.append(.php)
+   But instead of using ActiveExtensions you must add these lines instead:
+
+   [ExtensionSettings]
+   ActiveAccessExtensions[]=ezgpg
+
+4. We must now configuration eZ GPG
+
+   You will need to install and edit the ezgpg.ini.append.php file.
+   Customize the variables to meet your own needs, these are the two 
+   required variables; GPGKeyring and KeyID. Alternately you may create
+   an override copy of this file.
+
+   If you run several sites using only one distribution
+   and only some of the sites should use the extension,
+   make the changes in the override file of that siteaccess.
+
+   E.g root_of_ezpublish/settings/siteaccess/shop/ezgpg.ini.append(.php)
+   But you will need to edit these lines:
+
+   [GPGLocations]
+   GPGBinary=/usr/bin/gpg
+   # GPGKeyring=keyring
+   GPGKeyring=/web/pro/example.com/.gpg
+   GPGTempdir=/tmp
+
+   [eZGPGSettings]
+   KeyID=admin@example.com
+   Key=admin@example.com
+   Debug=false
+
+
+   Note:
+   ==============================
+   To switch eZ GPG mode from debug to live,
+   thus turning debug mode off.
+
+   Open the file ezgpg.ini.append(.php)
+   and switch "Debug=true" to "Debug=false".
+
+
+Usage
+==============================
+To switch debug mode off, open up ezgpg.ini.append.php
+and switch "Debug=true" to "Debug=false".
+
+
+Troubleshooting
+===============
+
+1. Read the FAQ
+   ------------
+
+   Some problems are more common than others. The most common ones are listed
+   in the the FAQ.
+
+2. Support
+   -------
+
+   If you have find any problems not handled by this document or the FAQ you
+   can contact Brookins Consulting trough the support system:
+   http://brookinsconsulting.com/contact
+

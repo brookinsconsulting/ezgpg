@@ -1,0 +1,77 @@
+eZ GPG extension v0.4.5 README
+
+What is the eZ GPG extension?
+================================
+
+eZ GPG is a true eZ publish extension
+that provides simple, transparent, secure 
+encryption and decryption to eZ publish
+using the GNU Privacy Guard, GPG.
+
+
+eZ GPG version
+=======================
+
+The current version of eZ GPG is 0.4.5.
+Last Updated: January 29, 2007
+
+You can find details about changes for this
+version in doc/changelogs/CHANGELOG-0.4.5
+
+
+License
+=======
+
+This software is licensed under the GNU General Public License.
+
+The complete license agreement is included in the doc/LICENSE file.
+
+For more information or questions please contact license@brookinsconsulting.com
+
+
+Requirements
+============
+
+The following requirements exists for using eZ GPG extension:
+
+o  eZ publish version:
+
+   Make sure you use eZ publish version 3.7 or higher.
+
+o  PHP version:
+
+   Make sure you have PHP 4.4.x or higher.
+
+o  eZ publish must be able to run external command 'gpg'
+
+
+Installation
+============
+
+Details on installing eZ GPG located in the file doc/INSTALL.
+
+
+Usage
+============
+
+Simply install and activate the extension.
+
+Then use the provided template operators in your templates, modules or extensions.
+
+
+Troubleshooting
+===============
+
+1. Read the FAQ
+   ------------
+
+   Some problems are more common than others. The most common ones
+   are listed in the the FAQ.
+
+2. Support
+   -------
+
+   If you have find any problems not handled by this document or the FAQ you
+   can contact Brookins Consulting through the support system:
+   http://brookinsconsulting.com/contact
+

@@ -1,0 +1,40 @@
+eZ GPG extension v0.4.5 FAQ
+
+1. GPG Shell API Support
+=================================================
+* Designed to provide a wrapper to using gpg shell binary
+
+
+1.1 GPG Resources
+=================================================
+http://www.gnupg.org/
+
+General Information:
+http://en.wikipedia.org/wiki/GNU_Privacy_Guard
+
+The GNU Privacy Handbook:
+http://www.gnupg.org/gph/en/manual.html
+http://www.gnupg.org/gph/en/manual.pdf
+
+
+2. Referencs
+=================================================
+* Portions of the 'PHP GPG' class were originaly implimentation 
+  by Nathan Ho | http://www.theoslogic.com/scripts/php-gpg/
+  With bugs fixed & modified for use in eZ publish from, 
+  Zurgutt <zurgutt@gg.ee>
+
+* Zurgutt <zurgutt@gg.ee> shared a base extension
+  for gpg encryption.
+
+
+3. Required Fields
+=================================================
+* Oddly enough, both the 'data' and 'key' arguments are required.
+
+
+4. Testing
+=================================================
+* This has only been completely tested using 
+  test mode, and has not yet been used for live transactions.
+

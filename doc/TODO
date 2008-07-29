@@ -1,0 +1,18 @@
+eZ GPG extension TODO
+=================================================
+
+There are still quite a lot of features we would
+like to add to eZ GPG.
+
+A few users of eZ GPG may require further
+extension of the default eZ publish store features.
+
+If you are interested in sponsoring the development
+of any of these features for your eZ publish web site,
+please contact info@brookinsconsulting.com
+
+Additional features:
++ Extended arguments and additional functions
+
+Extend gateway api support:
++ JS Browser Based Encryption
